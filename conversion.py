@@ -1,0 +1,3 @@
+
+class MyAssembly:
+    MyAssembly
