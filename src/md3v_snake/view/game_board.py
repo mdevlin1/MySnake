@@ -1,7 +1,7 @@
 import pygame
 import random
 import md3v_snake.consts as consts
-from md3v_snake.model.Player import Player
+from md3v_snake.model.player import Player
 
 class GameBoard:
     def __init__( self ):
