@@ -4,12 +4,15 @@ import md3v_snake.consts as consts
 from md3v_snake.model.Player import Player
 
 class GameBoard:
-    def Start():
+    def __init__( self ):
+        pass
+
+    def Start( self ):
         # setup display and load images
         screen = pygame.display.set_mode((1000, 600))
-        image = pygame.image.load('assets/white_square.jpg').convert()
-        clear = pygame.image.load('assets/clear.jpg').convert()
-        background = pygame.image.load('assets/background.jpg').convert()
+        image = pygame.image.load(consts.SNAKE_SQUARE_ASSET).convert()
+        clear = pygame.image.load(consts.CLEAR_SCREEN_ASSET).convert()
+        background = pygame.image.load(consts.GAME_BACKGROUND_ASSET).convert()
 
         notOver = True
         p1 = Player()
@@ -29,14 +32,14 @@ class GameBoard:
             # Entire board game is full
             if len(players) == 80:
                 notOver = False
-                youWin()
+                self.youWin()
             
             screen.blit(clear, players[0].position)
             for event in pygame.event.get():
                 # Quit game when exit button is pressed
                 if event.type == pygame.QUIT:
                     notOver = False
-                    game_over()
+                    self.game_over()
 
                 # Alter direction of players move
                 if event.type == pygame.KEYDOWN:
@@ -96,24 +99,24 @@ class GameBoard:
                 players[i].position = players[i-1].last_position
                 screen.blit(image, players[i].position)
 
-            if inList(players, players[0]):
+            if self.inList(players, players[0]):
                 notOver = False
-                game_over()
+                self.game_over()
 
             screen.blit(image, players[0].position)
             screen.blit(image, objective_pos)
             pygame.display.update()
             pygame.time.delay(speed)
 
-    def inList(a, x):
+    def inList(self, a, x):
         for i in range(1, len(a)):
             if a[i].position == x.position:
                     return True
         return False
 
-    def game_over():
+    def game_over(self):
         pygame.quit()
 
-    def youWin():
+    def youWin(self):
         print("you win!")
         pygame.quit()

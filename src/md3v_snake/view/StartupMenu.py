@@ -1,9 +1,13 @@
 
 import pygame
-from view.GameBoard import GameBoard
+from md3v_snake.view.GameBoard import GameBoard
+import md3v_snake.consts as consts
 
 class StartupMenu:
-    def Start():
+    def __init__( self ):
+        pass
+
+    def Start( self ):
         screen = pygame.display.set_mode((1000, 600))
         gameboard = GameBoard()
 
