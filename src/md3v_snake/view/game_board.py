@@ -4,29 +4,25 @@ import md3v_snake.consts as consts
 from md3v_snake.model.player import Player
 
 class GameBoard:
-    def __init__( self ):
-        pass
+    def __init__( self, config, assets, screen ):
+        self.assets = assets
+        self.screen = screen
+        self.player_speed = config[ consts.PLAYER_SPEED ]
 
-    def Start( self ):
-        # setup display and load images
-        screen = pygame.display.set_mode((1000, 600))
-        image = pygame.image.load(consts.SNAKE_SQUARE_ASSET).convert()
-        clear = pygame.image.load(consts.CLEAR_SCREEN_ASSET).convert()
-        background = pygame.image.load(consts.GAME_BACKGROUND_ASSET).convert()
+    def start( self ):
 
         notOver = True
         p1 = Player()
         players = [p1]
         objective_pos = [random.randrange(0, 1000, 20), random.randrange(0, 600, 20)]
                 
-        screen.blit(background, (0, 0))
-        screen.blit(image, players[0].position)
-        screen.blit(image, objective_pos)
+        self.screen.blit(self.assets.get_background_asset(), (0, 0))
+        self.screen.blit(self.assets.get_image_asset(), players[0].position)
+        self.screen.blit(self.assets.get_image_asset(), objective_pos)
         pygame.display.update()
 
         # default change
         change_in_position = (0, 20)
-        speed = 300
 
         while notOver:
             # Entire board game is full
@@ -34,7 +30,7 @@ class GameBoard:
                 notOver = False
                 self.youWin()
             
-            screen.blit(clear, players[0].position)
+            self.screen.blit(self.assets.get_clear_asset(), players[0].position)
             for event in pygame.event.get():
                 # Quit game when exit button is pressed
                 if event.type == pygame.QUIT:
@@ -74,7 +70,7 @@ class GameBoard:
 
             # objective player reached
             if players[0].position == objective_pos:
-                screen.blit(clear, objective_pos)
+                self.screen.blit(self.assets.get_clear_asset(), objective_pos)
                 objective_pos = [random.randrange(0, 1000, 20), random.randrange(0, 600, 20)]
                 while True:
                     elem_in_list = False
@@ -90,23 +86,24 @@ class GameBoard:
 
                 p2 = Player()
                 players.append(p2)
-                if speed > 75:
-                    speed -= 4
+                if self.player_speed > 75:
+                    self.player_speed -= 4
 
             for i in range(1, len(players)):
                 players[i].last_position = players[i].position
-                screen.blit(clear, players[i].position)
+                self.screen.blit(self.assets.get_clear_asset(), players[i].position)
                 players[i].position = players[i-1].last_position
-                screen.blit(image, players[i].position)
+                self.screen.blit(self.assets.get_image_asset(), players[i].position)
 
             if self.inList(players, players[0]):
                 notOver = False
                 self.game_over()
 
-            screen.blit(image, players[0].position)
-            screen.blit(image, objective_pos)
+            self.screen.blit(self.assets.get_image_asset(), players[0].position)
+            self.screen.blit(self.assets.get_image_asset(), objective_pos)
             pygame.display.update()
-            pygame.time.delay(speed)
+            # FIXME: Player speed is the same as time delay for updating screen?
+            pygame.time.delay(self.player_speed)
 
     def inList(self, a, x):
         for i in range(1, len(a)):
