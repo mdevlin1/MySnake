@@ -14,3 +14,8 @@ START_BUTTON_ASSET='StartButton.png'
 OPTIONS_BUTTON_ASSET='OptionsButton.png'
 SNAKE_SQUARE_ASSET='white_square.jpg'
 CLEAR_SCREEN_ASSET='clear.jpg'
+
+# Button recs
+# x1, x2, y1, y2
+START_BUT_REC=(355,645,100,200)
+OPTIONS_BUT_REC=(355,645,250,350)

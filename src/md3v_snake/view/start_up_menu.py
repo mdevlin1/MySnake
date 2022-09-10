@@ -15,10 +15,14 @@ class StartupMenu:
             mouse = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 # Start button bounding rect
-                if 645 > mouse[0] > 355 and 200 > mouse[1] > 100 and event.type == pygame.MOUSEBUTTONUP:
-                        return
+                if consts.START_BUT_REC[1] > mouse[0] > consts.START_BUT_REC[0] \
+                    and consts.START_BUT_REC[3] > mouse[1] > consts.START_BUT_REC[2] \
+                    and event.type == pygame.MOUSEBUTTONUP:
+                    return
                 # Options button bounding rect
-                elif 645 > mouse[0] > 355 and 350 > mouse[1] > 250 and event.type == pygame.MOUSEBUTTONUP:
+                elif consts.START_BUT_REC[1] > mouse[0] > consts.START_BUT_REC[0] \
+                    and consts.START_BUT_REC[3] > mouse[1] > consts.START_BUT_REC[2] \
+                    and event.type == pygame.MOUSEBUTTONUP:
                     self.screen.blit(self.assets.get_background_asset(), (0, 0))
                     break
 
