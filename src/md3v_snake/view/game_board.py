@@ -56,17 +56,7 @@ class GameBoard:
             players[0].last_position = players[0].position
             players[0].position = list(map(sum, zip(players[0].position, change_in_position)))
 
-
-            # When out of bounds, go to opposite side of board
-            if players[0].position[0] >= 1000:
-                players[0].position[0] = 0
-            elif players[0].position[0] < 0:
-                players[0].position[0] = 1000
-
-            if players[0].position[1] >= 600:
-                players[0].position[1] = 0
-            elif players[0].position[1] < 0:
-                players[0].position[1] = 600
+            self.checkScreenLimits( players[0] )
 
             # objective player reached
             if players[0].position == objective_pos:
@@ -105,6 +95,22 @@ class GameBoard:
             # FIXME: Player speed is the same as time delay for updating screen?
             pygame.time.delay(self.player_speed)
 
+    def checkScreenLimits( self, player ):
+        # Get the screen dimensions which act as boundaries for
+        # the snake "player"
+        screen_x_boundary = self.screen.get_rect()[2]
+        screen_y_boundary = self.screen.get_rect()[3]
+
+        if player.position[consts.X_POS_IDX] >= screen_x_boundary:
+            player.position[consts.X_POS_IDX] = 0
+        elif player.position[consts.X_POS_IDX] < 0:
+            player.position[consts.X_POS_IDX] = screen_x_boundary
+
+        if player.position[consts.Y_POS_IDX] >= screen_y_boundary:
+            player.position[consts.Y_POS_IDX] = 0
+        elif player.position[consts.Y_POS_IDX] < 0:
+            player.position[consts.Y_POS_IDX] = screen_y_boundary
+    
     def inList(self, a, x):
         for i in range(1, len(a)):
             if a[i].position == x.position:
