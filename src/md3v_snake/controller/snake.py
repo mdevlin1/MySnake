@@ -10,6 +10,7 @@ class Snake:
     def __init__( self, config_file ):
 
         self.config = conf_load( config_file )
+        self.speed = self.config[consts.PLAYER_SPEED]
         
         # setup display and load images
         # TODO: We should probably have the view objects initialise the screen,
@@ -27,5 +28,15 @@ class Snake:
         self.game_board = GameBoard( self.config, assets, screen )
 
     def run( self ):    
-        self.start_up_menu.start()
-        self.game_board.start()
+        self.start_up_menu.show_startup_menu()
+        while True:
+            mouse = pygame.mouse.get_pos()
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.start_up_menu.check_start_button( mouse ):
+                        self.game_board.start()
+                    if self.start_up_menu.check_options_button( mouse ):
+                        return
+            # FIXME: Player speed is the same as time delay for updating screen?
+            pygame.time.delay(self.speed)
+

@@ -8,10 +8,11 @@ class GameBoard:
         self.assets = assets
         self.screen = screen
         self.player_speed = config[ consts.PLAYER_SPEED ]
+        self.running = False
 
     def start( self ):
 
-        notOver = True
+        self.running = True
         p1 = Player()
         players = [p1]
         objective_pos = [random.randrange(0, 1000, 20), random.randrange(0, 600, 20)]
@@ -24,10 +25,11 @@ class GameBoard:
         # default change
         change_in_position = (0, 20)
 
-        while notOver:
+        while self.running:
             # Entire board game is full
+            # Todo: Locked into screen size
             if len(players) == 80:
-                notOver = False
+                self.running = False
                 self.youWin()
             
             self.screen.blit(self.assets.get_clear_asset(), players[0].position)
