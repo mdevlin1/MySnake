@@ -39,9 +39,9 @@ class Snake:
 
         p1 = Player()
         players = [p1]
-        objective_pos = [random.randrange(0, 1000, 20), random.randrange(0, 600, 20)]
+        objective_pos = [random.randrange(0, 1000, consts.PLAYER_SIZE), random.randrange(0, 600, consts.PLAYER_SIZE)]
         # default change
-        change_in_position = (0, 20)
+        change_in_position = (0, consts.PLAYER_SIZE)
 
         while self.start_up:
             mouse = pygame.mouse.get_pos()
@@ -73,17 +73,17 @@ class Snake:
                 # Alter direction of players move
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        if change_in_position != (0, 20):
-                            change_in_position = (0, -20)
+                        if change_in_position != (0, consts.PLAYER_SIZE):
+                            change_in_position = (0, -consts.PLAYER_SIZE)
                     elif event.key == pygame.K_DOWN:
-                        if change_in_position != (0, -20):
-                            change_in_position = (0, 20)
+                        if change_in_position != (0, -consts.PLAYER_SIZE):
+                            change_in_position = (0, consts.PLAYER_SIZE)
                     elif event.key == pygame.K_RIGHT:
-                        if change_in_position != (-20, 0):
-                            change_in_position = (20, 0)
+                        if change_in_position != (-consts.PLAYER_SIZE, 0):
+                            change_in_position = (consts.PLAYER_SIZE, 0)
                     elif event.key == pygame.K_LEFT:
-                        if change_in_position != (20, 0):
-                            change_in_position = (-20, 0)
+                        if change_in_position != (consts.PLAYER_SIZE, 0):
+                            change_in_position = (-consts.PLAYER_SIZE, 0)
 
             # record last position and change player's current position 
             players[0].last_position = players[0].position
@@ -93,12 +93,12 @@ class Snake:
 
             # objective player reached
             if players[0].position == objective_pos:
-                objective_pos = [random.randrange(0, 1000, 20), random.randrange(0, 600, 20)]
+                objective_pos = [random.randrange(0, 1000, consts.PLAYER_SIZE), random.randrange(0, 600, consts.PLAYER_SIZE)]
                 while True:
                     elem_in_list = False
                     for i in range(0, len(players)):
                         if players[i].position == objective_pos:
-                            objective_pos = [random.randrange(0, 1000, 20), random.randrange(0, 600, 20)]
+                            objective_pos = [random.randrange(0, 1000, consts.PLAYER_SIZE), random.randrange(0, 600, consts.PLAYER_SIZE)]
                             elem_in_list = True
                             break
                         elem_in_list = False
