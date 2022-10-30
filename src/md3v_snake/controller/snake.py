@@ -17,17 +17,22 @@ class Snake:
         # setup display and load images
         # TODO: We should probably have the view objects initialise the screen,
         # but it must be initialized before loading assets
-        screen = pygame.display.set_mode(
+        self.screen = pygame.display.set_mode(
             (self.config[consts.SCREEN_X], 
             self.config[consts.SCREEN_Y])
         )
+        self.screen_rect_x = self.screen.get_rect()[2]
+        self.screen_rect_y = self.screen.get_rect()[3]
+
+        # FIXME: Config validation to make sure that the total number of squares is an integer
+        self.total_num_squares = (self.screen_rect_x/consts.PLAYER_SIZE) + (self.screen_rect_y/consts.PLAYER_SIZE)
 
         # Load up images and sprites necessary for game
         assets = Assets()
         assets.load_assets( self.config[ consts.ASSET_DIR] )
 
-        self.start_up_menu = StartupMenu( self.config, assets, screen )
-        self.game_board = GameBoard( self.config, assets, screen )
+        self.start_up_menu = StartupMenu( self.config, assets, self.screen )
+        self.game_board = GameBoard( self.config, assets, self.screen )
         self.start_up = False
         self.running = False
 
@@ -39,7 +44,7 @@ class Snake:
 
         p1 = Player()
         players = [p1]
-        objective_pos = [random.randrange(0, 1000, consts.PLAYER_SIZE), random.randrange(0, 600, consts.PLAYER_SIZE)]
+        objective_pos = [random.randrange(0, self.screen_rect_x, consts.PLAYER_SIZE), random.randrange(0, self.screen_rect_y, consts.PLAYER_SIZE)]
         # default change
         change_in_position = (0, consts.PLAYER_SIZE)
 
@@ -58,9 +63,8 @@ class Snake:
         
         self.running = True
         while self.running:
-            # Entire board game is full
-            # Todo: Locked into screen size
-            if len(players) == 80:
+            # Entire board game is full 
+            if len(players) == self.total_num_squares:
                 self.running = False
                 self.youWin()
 
@@ -68,7 +72,7 @@ class Snake:
                 # Quit game when exit button is pressed
                 if event.type == pygame.QUIT:
                     notOver = False
-                    self.game_over()
+                    self.gameOver()
 
                 # Alter direction of players move
                 if event.type == pygame.KEYDOWN:
@@ -93,12 +97,12 @@ class Snake:
 
             # objective player reached
             if players[0].position == objective_pos:
-                objective_pos = [random.randrange(0, 1000, consts.PLAYER_SIZE), random.randrange(0, 600, consts.PLAYER_SIZE)]
+                objective_pos = [random.randrange(0, self.screen_rect_x, consts.PLAYER_SIZE), random.randrange(0, self.screen_rect_y, consts.PLAYER_SIZE)]
                 while True:
                     elem_in_list = False
                     for i in range(0, len(players)):
                         if players[i].position == objective_pos:
-                            objective_pos = [random.randrange(0, 1000, consts.PLAYER_SIZE), random.randrange(0, 600, consts.PLAYER_SIZE)]
+                            objective_pos = [random.randrange(0, self.screen_rect_x, consts.PLAYER_SIZE), random.randrange(0, self.screen_rect_y, consts.PLAYER_SIZE)]
                             elem_in_list = True
                             break
                         elem_in_list = False
@@ -146,7 +150,7 @@ class Snake:
                     return True
         return False
 
-    def game_over(self):
+    def gameOver(self):
         pygame.quit()
 
     def youWin(self):

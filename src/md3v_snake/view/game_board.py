@@ -20,6 +20,7 @@ class GameBoard:
         self.screen.blit(self.assets.get_image_asset(), objective_pos)
         pygame.display.update()
 
+
     def update_player_speed( self, player_speed ):
         pygame.time.delay(player_speed)
 
